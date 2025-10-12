@@ -1,0 +1,9 @@
+<div class="task-card">
+    <h3 class="task-title">{{ task.title }}</h3>
+    <p class="task-meta">
+        {{ task.get_category_display }}
+        {% if task.due_date %}
+            &middot; Due: {{ task.due_date|date:"M j, Y" }}
+        {% endif %}
+    </p>
+</div>

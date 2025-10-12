@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Eisenhower Matrix</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+    <div class="login-page">
+        <button id="theme-toggle" title="Toggle dark mode">
+            <!-- Sun Icon -->
+            <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.06l1.59-1.59a.75.75 0 011.06 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.894 17.894a.75.75 0 011.06 0l1.59 1.591a.75.75 0 11-1.06 1.06l-1.59-1.59a.75.75 0 010-1.061zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM5.106 17.894a.75.75 0 010-1.06l1.59-1.591a.75.75 0 111.06 1.06l-1.59 1.59a.75.75 0 01-1.06 0zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.106 5.106a.75.75 0 011.06 0l1.591 1.59a.75.75 0 01-1.06 1.06l-1.59-1.59a.75.75 0 010-1.06z"></path></svg>
+            <!-- Moon Icon -->
+            <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-.948.75.75 0 01.981.649A11.25 11.25 0 0112 21a11.25 11.25 0 01-11.25-11.25 11.25 11.25 0 019.528-9.528zM12 18a6 6 0 110-12 6 6 0 010 12z" clip-rule="evenodd"></path></svg>
+        </button>
+        <div class="login-container">
+            <div class="login-box">
+
+                {% if error %}
+                    <div class="error-message">{{ error }}</div>
+                {% endif %}
+
+                <form method="post" action="{% url 'tasks:login' %}" id="login-form">
+                    {% csrf_token %}
+                    
+                    <!-- Step 1: Username -->
+                    <div id="step-username">
+                        <div class="login-header">
+                            <div class="color-bar"></div>
+                            <h1>
+                                <span class="c-red">Sign</span> 
+                                <span class="c-blue">In</span> 
+                                <span class="c-yellow">To</span> 
+                                <span class="c-green">Continue</span>
+                            </h1>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" required>
+                        </div>
+                        <button type="button" class="button-primary" id="next-btn">Next</button>
+                    </div>
+
+                    <!-- Step 2: Password -->
+                    <div id="step-password" class="hidden">
+                        <div class="login-header">
+                             <div class="color-bar"></div>
+                            <h1 id="locked-username"></h1>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password" required>
+                        </div>
+                        <button type="submit" class="button-primary">Sign In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const stepUsername = document.getElementById('step-username');
+            const stepPassword = document.getElementById('step-password');
+            const nextBtn = document.getElementById('next-btn');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const lockedUsernameDisplay = document.getElementById('locked-username');
+            const loginForm = document.getElementById('login-form');
+
+            nextBtn.addEventListener('click', () => {
+                // If username is not empty
+                if (usernameInput.value.trim() !== '') {
+                    lockedUsernameDisplay.textContent = usernameInput.value;
+                    stepUsername.classList.add('hidden');
+                    stepPassword.classList.remove('hidden');
+                    passwordInput.focus();
+                }
+            });
+
+            // Allow pressing Enter on username field to go to the next step
+            usernameInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent form submission
+                    nextBtn.click();
+                }
+            });
+
+        // Theme toggle logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+
+        const applyTheme = (theme) => {
+            if (theme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        };
+
+        const toggleTheme = () => {
+            const isDarkMode = document.body.classList.toggle('dark-mode');
+            const currentTheme = isDarkMode ? 'dark' : 'light';
+            localStorage.setItem('theme', currentTheme);
+        };
+
+        // Apply saved theme on page load
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+    });
+
+    </script>
+</body>
+</html>
+
+
