@@ -36,6 +36,7 @@ class Task(models.Model):
         APPLE = 'apple', 'Mac Issues'
         WINDOWS = 'windows', 'Windows Issues'
         MICROSOFT = 'microsoft', 'O365 Issues'
+        SAP = 'sap', 'SAP Errors'
         
     # --- Core Task Attributes ---
     title = models.CharField(max_length=200)

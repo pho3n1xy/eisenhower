@@ -33,7 +33,7 @@ class TaskAdmin(admin.ModelAdmin):
             'fields': ('urgent', 'important', 'category', 'tags')
         }),
         ('Assignment & Status', {
-            'fields': ('status', 'reporter', 'assignee', 'due_date')
+            'fields': ('status', 'requester', 'assignee', 'due_date')
         }),
         ('Metadata', {
             'fields': ('created_at', 'is_archived')
@@ -43,7 +43,7 @@ class TaskAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         """Automatically set the reporter to the current user when a task is created."""
         if not obj.pk:  # If the object is being created
-            obj.reporter = request.user
+            obj.requester = request.user
         super().save_model(request, obj, form, change)
 
 @admin.register(Tag)

@@ -8,6 +8,9 @@ urlpatterns = [
     # When a request comes to the app's root (''), call the matrix_view function
     path('', views.matrix_view, name='matrix'),
 
+    # Route for the new task creation page
+    path('create/', views.create_task, name='create'),
+
     #URL for login page
     path('login/', views.login_view, name='login'), 
 

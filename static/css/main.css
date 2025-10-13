@@ -292,3 +292,157 @@ body {
     top: 2rem;
     right: 2rem;
 }
+
+
+
+/* 10. new task button*/
+
+.header-controls .button-primary {
+    padding: 0.6rem 1.2rem;
+    width: auto;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    background-image: var(--button-gradient);
+    background-size: 200% auto; /* Makes gradient larger for animation */
+    transition: transform 0.2s, box-shadow 0.2s, background-position 0.4s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-controls .button-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-position: right center; /* This animates the gradient on hover */
+}
+
+
+/* Add this to main.css */
+.header-controls {
+    display: flex;
+    align-items: center; /* This is the magic line that vertically aligns everything */
+    gap: 1rem; /* This adds a nice space between the two buttons */
+}
+
+:root {
+    /* ... your existing variables ... */
+    --accent-color: #007aff; /* Apple Blue */
+
+    /* --- FIND AND REPLACE THIS LINE --- */
+    --button-gradient-light: linear-gradient(90deg, #8b5cf6, #3b82f6, #ef4444); /* From Purple, to Blue, to Red */
+    
+    --button-gradient-dark: linear-gradient(90deg, #ef4444, #f59e0b, #22c55e, #3b82f6);
+}
+
+body.dark-mode {
+    /* ... your existing variables ... */
+    --accent-color: #0a84ff; /* Brighter Apple Blue for dark mode */
+
+    /* --- ADD THIS NEW LINE --- */
+    --button-gradient: var(--button-gradient-dark);
+}
+
+/* Add this right below the body.dark-mode rule */
+:root {
+    --button-gradient: var(--button-gradient-light);
+}
+
+
+/* 11. Form Styling for {{ form.as_p }} */
+/* Styles the overall form container in the task_form.html */
+
+.button-primary {
+    /* Basic size and text settings */
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    color: white; /* Important to keep text visible */
+    cursor: pointer; /* Makes it look clickable */
+
+    /* Gradient and Animation */
+    background-image: var(--button-gradient);
+    background-size: 200% auto;
+    transition: transform 0.2s, box-shadow 0.2s, background-position 0.4s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-position: right center;
+}
+
+
+.task-form {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-2);
+}
+
+/* Styles the <p> tag wrapper created by form.as_p */
+.task-form p {
+    margin-bottom: 1rem;
+}
+
+/* Styles the <label> tag */
+.task-form label {
+    display: block; /* Ensures the label takes its own line */
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+/* Styles all input/textarea/select elements */
+.task-form input[type="text"],
+.task-form input[type="number"],
+.task-form textarea,
+.task-form select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+/* Focus state for inputs */
+.task-form input:focus,
+.task-form textarea:focus,
+.task-form select:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
+
+/* Style error lists */
+.task-form ul.errorlist {
+    color: var(--error-color); /* You'll need a variable for error color, e.g., #ef4444 */
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Ensure the Save Task button inherits all the button styles */
+/* The button in task_form.html already has class="button-primary" */
+/* We just need to ensure it applies the same padding/width as the header controls for consistency */
+.task-form .button-primary {
+    /* Inherits all base styles from the generic .button-primary */
+    padding: 0.75rem 1.5rem; /* A slightly larger padding might look better for a full-width action button */
+    width: 100%; /* Makes the button full width to match the inputs */
+}
+
+
+/* Ensure the Save Task button inherits all the button styles */
+/* It already has class="button-primary" in task_form.html */
+.task-form .button-primary {
+    /* Inherits all base styles from the generic .button-primary */
+    padding: 0.75rem 1.5rem; /* Makes the button look substantial */
+    width: 100%; /* Makes the button full width to match the inputs */
+}
