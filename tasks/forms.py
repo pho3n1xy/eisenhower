@@ -35,3 +35,17 @@ class AttachmentForm(forms.ModelForm):
         labels = {
             'file': 'Upload a file',
         }
+
+class StatusUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['status']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # This adds an HTML attribute to the status dropdown widget
+        self.fields['status'].widget.attrs.update({
+            'class': 'form-select-sm', # A new class for a smaller select box
+            'onchange': 'this.form.submit()' # This JavaScript submits the form automatically on change
+        })
+        self.fields['status'].label = "" # Hide the "Status:" label

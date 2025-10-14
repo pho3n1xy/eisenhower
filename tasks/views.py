@@ -5,7 +5,7 @@ from django.views.decorators.http import require_POST
 from .models import Task
 from django.http import HttpResponseRedirect
 from django.db.models import Q
-from .forms import TaskForm, CommentForm, AttachmentForm
+from .forms import TaskForm, CommentForm, AttachmentForm, StatusUpdateForm
 
 
 #Decorator to protect the matrix view
@@ -143,7 +143,9 @@ def task_detail_view(request, pk):
 
     if request.method == 'POST':
         # Check if the comment form was submitted
-        if 'add_comment' in request.POST:
+        form_identifier = request.POST.get('form_identifier')
+
+        if form_identifier == 'add_comment':
             comment_form = CommentForm(request.POST)
             if comment_form.is_valid():
                 comment = comment_form.save(commit=False)
@@ -153,24 +155,35 @@ def task_detail_view(request, pk):
                 return redirect('tasks:task_detail', pk=task.pk)
 
         # Check if the attachment form was submitted
-        if 'add_attachment' in request.POST:
+        elif form_identifier == 'add_attachment':
             attachment_form = AttachmentForm(request.POST, request.FILES)
             if attachment_form.is_valid():
                 attachment = attachment_form.save(commit=False)
+                attachment.original_filename = attachment_form.cleaned_data['file'].name
                 attachment.task = task
                 attachment.uploaded_by = request.user
                 attachment.save()
+                return redirect('tasks:task_detail', pk=task.pk)
+            
+        # --- this block handles the status update ---
+        elif form_identifier == 'update_status':
+            status_form = StatusUpdateForm(request.POST, instance=task)
+            if status_form.is_valid():
+                status_form.save()
+
                 return redirect('tasks:task_detail', pk=task.pk)
 
     # For a GET request, create empty forms
     comment_form = CommentForm()
     attachment_form = AttachmentForm()
+    status_form = StatusUpdateForm(instance=task)
 
     context = {
         'task': task,
         'comments': comments,
         'attachments': attachments,
         'comment_form': comment_form,
-        'attachment_form': attachment_form
+        'attachment_form': attachment_form,
+        'status_form': status_form
     }
     return render(request, 'tasks/task_detail.html', context)

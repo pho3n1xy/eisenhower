@@ -510,3 +510,20 @@ body.dark-mode .status-open {
 .comment p:last-child {
     margin: 0;
 }
+
+/* --- Styles for the inline status update form --- */
+
+.status-update-form {
+    margin: 0;
+}
+.status-update-form p {
+    margin: 0;
+}
+.form-select-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+}
+.hidden {
+    display: none;
+}

@@ -18,7 +18,13 @@
             <h3>Details</h3>
             <dl>
                 <dt>Status</dt>
-                <dd><span class="task-status-badge status-{{ task.status|lower }}">{{ task.get_status_display }}</span></dd>
+                <dd>
+                    <form method="POST" class="status-update-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="form_identifier" value="update_status">
+                        {{ status_form.status }}
+                    </form>
+                </dd>
 
                 <dt>Category</dt>
                 <dd>{{ task.get_category_display }}</dd>
@@ -38,12 +44,13 @@
             <h3>Attachments</h3>
             <form method="POST" enctype="multipart/form-data" class="attachment-form">
                 {% csrf_token %}
+                <input type="hidden" name="form_identifier" value="add_attachment">
                 {{ attachment_form.as_p }}
-                <button type="submit" name="add_attachment" class="button-secondary">Upload</button>
+                <button type="submit" class="button-secondary">Upload</button>
             </form>
             <ul class="attachment-list">
                 {% for attachment in attachments %}
-                    <li><a href="{{ attachment.file.url }}" target="_blank">{{ attachment.file.name|cut:"attachments/" }}</a> <span class="meta-text">by {{ attachment.uploaded_by.username }}</span></li>
+                    <li><a href="{{ attachment.file.url }}" target="_blank">{{ attachment.original_filename }}</a> <span class="meta-text">by {{ attachment.uploaded_by.username }}</span></li>
                 {% empty %}
                     <li class="meta-text">No files attached.</li>
                 {% endfor %}
@@ -52,8 +59,9 @@
             <h3>Activity</h3>
             <form method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="form_identifier" value="add_comment">
                 {{ comment_form.text }}
-                <button type="submit" name="add_comment" class="button-primary">Add Comment</button>
+                <button type="submit" class="button-primary">Add Comment</button>
             </form>
             <div class="comment-list">
                 {% for comment in comments %}

@@ -1,6 +1,24 @@
 import uuid
+import os
 from django.db import models
 from django.contrib.auth.models import User
+
+def user_directory_path(instance, filename):
+    '''
+    Generates a unique path for file uploads. 
+    Path will be: media/users/<username>/task_<id>/<uuid>-<filename>
+    '''
+
+    #get the original filename's extension
+    ext = filename.split('.')[-1]
+    #create a new, unique filename using UUID
+    new_filename=f"{uuid.uuid4()}.{ext}"
+
+    username = instance.uploaded_by.username
+    task_id = instance.task.pk
+    file_path = os.path.join('users', username, f'task_{task_id}', new_filename)
+    return file_path
+
 
 class Tag(models.Model):
     """Represents a tag or label that can be applied to tasks."""
@@ -102,10 +120,14 @@ class Comment(models.Model):
 class Attachment(models.Model):
     """Represents a file attached to a task/ticket."""
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='attachments')
-    file = models.FileField(upload_to='attachments/')
+    file = models.FileField(upload_to=user_directory_path)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    original_filename = models.CharField(max_length=255)
+
     def __str__(self):
-        return f'Attachment for {self.task.title}'
+        return self.original_filename or self.file.name
+
+
 
