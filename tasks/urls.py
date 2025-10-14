@@ -15,6 +15,9 @@ urlpatterns = [
     path('login/', views.login_view, name='login'), 
 
     #URL to handle logging out 
-    path('logout/', views.logout_view, name='logout')
+    path('logout/', views.logout_view, name='logout'), 
+
+    #URL to handle editing views
+    path('edit/<int:pk>/', views.edit_task, name='edit_task')
 ]
 

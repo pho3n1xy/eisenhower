@@ -1,5 +1,10 @@
 <div class="task-card">
-    <h3 class="task-title">{{ task.title }}</h3>
+    <div class="task-card-header">
+        
+        <h3 class="task-title">{{ task.title }}</h3>
+        <a href="{% url 'tasks:edit_task' pk=task.pk %}" class="button-primary task-edit-button">Edit</a>
+
+    </div>
     <p class="task-meta">
         {{ task.get_category_display }}
         {% if task.due_date %}

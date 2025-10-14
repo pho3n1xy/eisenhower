@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Task
@@ -69,5 +69,23 @@ def create_task(request):
     # This line MUST be at the base indentation level of the function.
     # It should NOT be inside the 'else' block.
     return render(request, 'tasks/task_form.html', {'form': form})
-        
 
+
+        
+@login_required
+def edit_task(request, pk):
+    # Get the specific task object we want to edit, or return a 404 error if it doesn't exist
+    task = get_object_or_404(Task, pk=pk, assignee=request.user)
+
+    if request.method == 'POST':
+        # If the form is being submitted, populate the form with the submitted data AND the existing task instance
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save() # Save the changes to the existing task
+            return redirect('tasks:matrix') # Redirect back to the main matrix view
+    else:
+        # If it's a GET request (just loading the page), populate the form with the existing task's data
+        form = TaskForm(instance=task)
+
+    # Render the same form template, but with the pre-populated form
+    return render(request, 'tasks/task_form.html', {'form': form})

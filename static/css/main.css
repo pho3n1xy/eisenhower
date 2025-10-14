@@ -446,3 +446,78 @@ body.dark-mode {
     padding: 0.75rem 1.5rem; /* Makes the button look substantial */
     width: 100%; /* Makes the button full width to match the inputs */
 }
+
+
+/* 12. Task Card Header & Edit Button */
+
+.task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem; /* Adds space between the title/button line and the meta text */
+}
+
+.task-card-header .task-title {
+    flex-grow: 1; /* Allows the title to take up all available space */
+    margin: 0; /* Removes default h3 margin */
+    padding-right: 1rem; /* Prevents long titles from touching the button */
+}
+
+.task-edit-button {
+    /* -- Sizing -- */
+    width: auto; 
+    padding: 0.25rem 0.75rem; 
+    font-size: 0.8rem;
+    font-weight: 500;
+    flex-shrink: 0;
+
+    /* -- Restored Effects -- */
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 6px; /* A slightly smaller radius for a smaller button */
+    background-image: var(--button-gradient);
+    background-size: 200% auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s, background-position 0.4s ease;
+}
+
+
+.task-edit-button:hover {
+    /* A more subtle hover effect for this smaller button */
+    border-color: var(--text-color);
+    color: var(--text-color);
+    background-color: var(--quadrant-bg-color);
+    transform: none; /* Removes the translateY effect */
+    box-shadow: 0 2px 4px var(--shadow-color); /* A very light shadow on hover */
+    background-position: initial; /* Resets gradient animation if you keep it */
+}
+
+/* -- Night mode button text color for ALL buttons -- */
+body.dark-mode .button-primary {
+    color: #000000; /* Sets text to black */
+}
+
+
+/* 13. Task List Scrolling Container */
+
+.task-list-container {
+    max-height: 255px; /* Sets a fixed max height, enough for about 3 cards */
+    overflow-y: auto;  /* Adds a vertical scrollbar ONLY when content exceeds the max-height */
+    padding-right: 8px; /* Adds a little space so cards don't touch the scrollbar */
+    margin-right: -8px; /* Hides the extra space when no scrollbar is present */
+}
+
+/* --- Optional: Prettier Scrollbar Styling --- */
+.task-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.task-list-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.task-list-container::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 20px;
+}
