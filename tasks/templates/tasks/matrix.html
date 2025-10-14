@@ -1,93 +1,81 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eisenhower Matrix</title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-</head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1 class="header-title">Acuantia Service Desk</h1>
+{% extends "tasks/base.html" %}
 
-            <div class="header-controls">
-                <a href="{% url 'tasks:create' %}" class="button-primary">New Task</a>
-                <button id="theme-toggle" title="Toggle dark mode">
-                    <!-- SVG icons remain the same -->
-                    <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.06l1.59-1.59a.75.75 0 011.06 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.894 17.894a.75.75 0 011.06 0l1.59 1.591a.75.75 0 11-1.06 1.06l-1.59-1.59a.75.75 0 010-1.061zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM5.106 17.894a.75.75 0 010-1.06l1.59-1.591a.75.75 0 111.06 1.06l-1.59 1.59a.75.75 0 01-1.06 0zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.106 5.106a.75.75 0 011.06 0l1.591 1.59a.75.75 0 01-1.06 1.06l-1.59-1.59a.75.75 0 010-1.06z"></path></svg>
-                    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-.948.75.75 0 01.981.649A11.25 11.25 0 0112 21a11.25 11.25 0 01-11.25-11.25 11.25 11.25 0 019.528-9.528zM12 18a6 6 0 110-12 6 6 0 010 12z" clip-rule="evenodd"></path></svg>
-                </button>
+{% block title %}Eisenhower Matrix{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="header">
+        <h1 class="header-title">
+            <span class="c-blue">Acuantia</span>
+            <span class="c-green">Service</span>
+            <span class="c-amber">Desk</span>
+        </h1>
+
+        <div class="header-controls">
+            <a href="{% url 'tasks:create' %}" class="button-primary">New Task</a>
+            <button id="theme-toggle" title="Toggle dark mode">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.06l1.59-1.59a.75.75 0 011.06 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.894 17.894a.75.75 0 011.06 0l1.59 1.591a.75.75 0 11-1.06 1.06l-1.59-1.59a.75.75 0 010-1.061zM12 18a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM5.106 17.894a.75.75 0 010-1.06l1.59-1.591a.75.75 0 111.06 1.06l-1.59 1.59a.75.75 0 01-1.06 0zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.106 5.106a.75.75 0 011.06 0l1.591 1.59a.75.75 0 01-1.06 1.06l-1.59-1.59a.75.75 0 010-1.06z"></path></svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.463-.948.75.75 0 01.981.649A11.25 11.25 0 0112 21a11.25 11.25 0 01-11.25-11.25 11.25 11.25 0 019.528-9.528zM12 18a6 6 0 110-12 6 6 0 010 12z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="matrix-grid">
+        <div class="quadrant do-first">
+            <div class="quadrant-header">
+                <h2 class="quadrant-title">Urgent & Important</h2>
+                <p class="quadrant-subtitle">Do First</p>
             </div>
-        </header>
-
-        <main class="matrix-grid">
-
-            <!-- Quadrant 1: Do First -->
-            <div class="quadrant do-first">
-                <div class="quadrant-header">
-                    <h2 class="quadrant-title">Urgent & Important</h2>
-                    <p class="quadrant-subtitle">Do First</p>
-                </div>
-                <div class="task-list-container">
-                    {% for task in do_first_tasks %}
-                        {% include "tasks/task_card.html" with task=task %}
-                    {% empty %}
-                        <p class="task-list-empty">No tasks in this quadrant.</p>
-                    {% endfor %}
-                </div> 
-            </div>
-
-            <!-- Quadrant 2: Schedule -->
-            <div class="quadrant schedule">
-                <div class="quadrant-header">
-                    <h2 class="quadrant-title">Not Urgent & Important</h2>
-                    <p class="quadrant-subtitle">Schedule</p>
-                </div>
-                <div class="task-list-container">
-                    {% for task in schedule_tasks %}
+            <div class="task-list-container">
+                {% for task in do_first_tasks %}
                     {% include "tasks/task_card.html" with task=task %}
                 {% empty %}
                     <p class="task-list-empty">No tasks in this quadrant.</p>
                 {% endfor %}
-                </div>
+            </div> 
+        </div>
+
+        <div class="quadrant schedule">
+            <div class="quadrant-header">
+                <h2 class="quadrant-title">Not Urgent & Important</h2>
+                <p class="quadrant-subtitle">Schedule</p>
             </div>
-
-            <!-- Quadrant 3: Delegate -->
-            <div class="quadrant delegate">
-                <div class="quadrant-header">
-                    <h2 class="quadrant-title">Urgent & Not Important</h2>
-                    <p class="quadrant-subtitle">Queue</p>
-                </div>
-                <div class="task-list-container">
-                    {% for task in delegate_tasks %}
-                        {% include "tasks/task_card.html" with task=task %}
-                    {% empty %}
-                        <p class="task-list-empty">No tasks in this quadrant.</p>
-                    {% endfor %}
-                </div>
+            <div class="task-list-container">
+                {% for task in schedule_tasks %}
+                {% include "tasks/task_card.html" with task=task %}
+            {% empty %}
+                <p class="task-list-empty">No tasks in this quadrant.</p>
+            {% endfor %}
             </div>
+        </div>
 
-            <!-- Quadrant 4: Delete / Archive -->
-            <div class="quadrant delete">
-                <div class="quadrant-header">
-                    <h2 class="quadrant-title">Not Urgent & Not Important</h2>
-                    <p class="quadrant-subtitle">Backlog / Archive</p>
-                </div>
-                <div class="task-list-container">
-                    {% for task in delete_tasks %}
-                        {% include "tasks/task_card.html" with task=task %}
-                    {% empty %}
-                        <p class="task-list-empty">No tasks in this quadrant.</p>
-                    {% endfor %}
-                </div>
+        <div class="quadrant delegate">
+            <div class="quadrant-header">
+                <h2 class="quadrant-title">Urgent & Not Important</h2>
+                <p class="quadrant-subtitle">Queue</p>
             </div>
+            <div class="task-list-container">
+                {% for task in delegate_tasks %}
+                    {% include "tasks/task_card.html" with task=task %}
+                {% empty %}
+                    <p class="task-list-empty">No tasks in this quadrant.</p>
+                {% endfor %}
+            </div>
+        </div>
 
-        </main>
-    </div>
-
-    <script src="{% static 'js/app.js' %}"></script>
-</body>
-</html>
-
+        <div class="quadrant delete">
+            <div class="quadrant-header">
+                <h2 class="quadrant-title">Not Urgent & Not Important</h2>
+                <p class="quadrant-subtitle">Backlog / Archive</p>
+            </div>
+            <div class="task-list-container">
+                {% for task in delete_tasks %}
+                    {% include "tasks/task_card.html" with task=task %}
+                {% empty %}
+                    <p class="task-list-empty">No tasks in this quadrant.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

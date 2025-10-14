@@ -1,31 +1,46 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Task</title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-</head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1 class="header-title">Create a New Task</h1>
-            <div class="header-controls">
-                <a href="{% url 'tasks:matrix' %}" class="button-primary">Back to Matrix</a>
-            </div>
-        </header>
+{% extends "tasks/base.html" %}
 
-        <main>
-            <form method="post" class="task-form">
-                {% csrf_token %}
-                
-                {{ form.as_p }}
+{% block title %}
+    {% if mode == 'create' %}Create Task{% else %}Edit Task{% endif %}
+{% endblock %}
 
-                <button type="submit" class="button-primary" style="margin-top: 1rem;">Save Task</button>
-            </form>
-        </main>
-    </div>
-    <script src="{% static 'js/app.js' %}"></script>
-</body>
-</html>
+{% block content %}
+<div class="container" style="max-width: 800px;">
+
+    <header class="header">
+        {% if mode == 'create' %}
+            <h1 class="header-title">
+                <span class="c-blue">Create</span> 
+                <span class="c-green">A</span> 
+                <span class="c-amber">New</span> 
+                <span class="c-red">Task</span>
+            </h1>
+        {% else %}
+            <h1 class="header-title">
+                <span class="c-blue">Edit</span> 
+                <span class="c-red">Task</span>
+            </h1>
+        {% endif %}
+
+        <div class="header-controls">
+            <a href="{% url 'tasks:matrix' %}" class="button-secondary">Back to Matrix</a>
+        </div>
+    </header>
+
+    <form method="post" class="task-form">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+
+        <div class="form-actions">
+            <button type="submit" class="button-primary">Save Task</button>
+        </div>
+
+        {% if form.instance.pk %}
+        <div class="delete-link-container">
+            <a href="{% url 'tasks:delete_task' pk=form.instance.pk %}" class="delete-link">Delete this task</a>
+        </div>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

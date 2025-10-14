@@ -1,7 +1,15 @@
-/* --- Apple UI Inspired Design with Dark Mode --- */
+/* --- Apple UI Inspired Design with Yellow Theme --- */
 
 /* 1. CSS Variables for Theming */
 :root {
+    /* Color Palette */
+    --color-red: #e53e3e;
+    --color-blue: #3b82f6;
+    --color-amber: #f59e0b; /* The new theme color */
+    --color-green: #10b981;
+
+    /* Theme Variables */
+    --accent-color: var(--color-amber); /* Set accent to yellow */
     --bg-color: #f9f9f9;
     --quadrant-bg-color: #ffffff;
     --text-color: #1d1d1f;
@@ -13,6 +21,7 @@
 }
 
 body.dark-mode {
+    --accent-color: #f6ad42; /* A slightly brighter yellow for dark mode */
     --bg-color: #121212;
     --quadrant-bg-color: #1e1e1e;
     --text-color: #e1e1e1;
@@ -39,6 +48,7 @@ body {
 }
 
 /* 3. Header and Dark Mode Toggle */
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -46,6 +56,12 @@ body {
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .header-title {
@@ -73,13 +89,10 @@ body {
     height: 24px;
     fill: var(--text-color);
 }
-.icon-sun, .icon-moon {
-    transition: transform 0.3s ease;
-}
+.icon-sun, .icon-moon { transition: transform 0.3s ease; }
 .dark-mode .icon-sun { transform: scale(0); }
 .dark-mode .icon-moon { transform: scale(1); }
 .icon-moon { position: absolute; transform: scale(0); }
-
 
 /* 4. Matrix Grid */
 .matrix-grid {
@@ -113,14 +126,13 @@ body {
     font-size: 1rem;
     font-weight: 500;
     margin: 0.25rem 0 0;
-    color: var(--secondary-text-color);
 }
 
 /* Color accents for subtitles */
-.quadrant.do-first .quadrant-subtitle { color: #e53e3e; }
-.quadrant.schedule .quadrant-subtitle { color: #3b82f6; }
-.quadrant.delegate .quadrant-subtitle { color: #f59e0b; }
-.quadrant.delete .quadrant-subtitle { color: #10b981; }
+.quadrant.do-first .quadrant-subtitle { color: var(--color-red); }
+.quadrant.schedule .quadrant-subtitle { color: var(--color-blue); }
+.quadrant.delegate .quadrant-subtitle { color: var(--color-amber); }
+.quadrant.delete .quadrant-subtitle { color: var(--color-green); }
 
 /* 6. Task Card Styles */
 .task-card {
@@ -130,7 +142,6 @@ body {
     margin-bottom: 0.75rem;
     box-shadow: 0 2px 4px var(--shadow-color);
     transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
 }
 
 .task-card:hover {
@@ -138,14 +149,24 @@ body {
     box-shadow: 0 4px 8px var(--shadow-color-hover);
 }
 
+.task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
 .task-title {
     font-weight: 600;
-    margin: 0 0 0.25rem 0;
+    margin: 0;
+    flex-grow: 1;
+    padding-right: 1rem;
 }
 
 .task-meta {
     font-size: 0.875rem;
     color: var(--secondary-text-color);
+    margin: 0;
 }
 
 .task-list-empty {
@@ -153,7 +174,153 @@ body {
     font-style: italic;
 }
 
-/* 7. Responsive Design */
+/* 7. Task List Scrolling Container */
+.task-list-container {
+    max-height: 255px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-right: -8px;
+}
+.task-list-container::-webkit-scrollbar { width: 6px; }
+.task-list-container::-webkit-scrollbar-track { background: transparent; }
+.task-list-container::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 20px;
+}
+
+/* 8. Unified Button Styles */
+.button-primary {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    color: #000000; /* Black text for best contrast on yellow */
+    background-color: var(--accent-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s ease;
+}
+
+.button-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    filter: brightness(0.95); /* Slightly darken on hover */
+}
+
+/* Sizing for "New Task" button */
+.header-controls .button-primary {
+    width: auto;
+    padding: 0.6rem 1.2rem;
+}
+
+/* Sizing for full-width buttons in forms */
+.task-form .button-primary,
+.login-box .button-primary {
+    width: 100%;
+    padding: 0.85rem;
+}
+
+/* Secondary "ghost" style for Edit buttons */
+.task-edit-button {
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    transition: all 0.2s ease;
+}
+
+.task-edit-button:hover {
+    background-color: var(--accent-color);
+    color: #000000; /* Black text on hover */
+}
+
+/* 9. Form and Login Styles */
+.task-form,
+.login-box {
+    background-color: var(--quadrant-bg-color);
+    padding: 2.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.form-group, .task-form p {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label, .task-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--secondary-text-color);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="datetime-local"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3); /* Yellow focus glow */
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    box-shadow: 0 0 0 3px rgba(246, 173, 66, 0.3); /* Brighter yellow glow for dark mode */
+}
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.login-container { width: 100%; max-width: 400px; padding: 2rem; }
+.login-box h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+.login-box p { color: var(--secondary-text-color); margin-bottom: 2rem; }
+.login-page #theme-toggle { position: absolute; top: 2rem; right: 2rem; }
+.color-bar {
+    height: 4px;
+    width: 50px;
+    margin: 1rem auto;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--color-red), var(--color-amber), var(--color-green), var(--color-blue));
+}
+.error-message {
+    background-color: rgba(229, 62, 62, 0.1);
+    color: var(--color-red);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+.c-red { color: var(--color-red); }
+.c-blue { color: var(--color-blue); }
+.c-amber { color: var(--color-amber); }
+.c-green { color: var(--color-green); }
+
+/* 10. Responsive Design */
 @media (max-width: 768px) {
     .matrix-grid {
         grid-template-columns: 1fr;
@@ -163,361 +330,75 @@ body {
     }
 }
 
-
-/* 8. Login Page Styles */
-.login-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
-.login-container {
-    width: 100%;
-    max-width: 400px;
-    padding: 2rem;
-}
-
-.login-box {
-    background-color: var(--quadrant-bg-color);
-    padding: 2.5rem;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
-    text-align: center;
-}
-
-.login-box h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-}
-
-.login-box p {
-    color: var(--secondary-text-color);
-    margin-bottom: 2rem;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--secondary-text-color);
-}
-
-.form-group input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-size: 1rem;
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.form-group input:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
-}
-
-.button-primary {
-    width: 100%;
-    padding: 0.85rem;
-    border: none;
-    border-radius: 8px;
-    background-color: var(--accent-color);
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.button-primary:hover {
-    filter: brightness(1.1);
-}
-
-.error-message {
-    background-color: rgba(229, 62, 62, 0.1);
-    color: #e53e3e;
-    padding: 0.75rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-
+/* Utility class to hide elements for JavaScript interaction */
 .hidden {
     display: none;
 }
 
-.login-header {
-    margin-bottom: 2rem;
-}
+/* --- New styles for Delete functionality --- */
 
-.login-header h1 {
-    font-size: 2rem;
-    margin: 1rem 0 0 0;
-}
-
-#locked-username {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--secondary-text-color);
-}
-
-.color-bar {
-    height: 4px;
-    width: 50px;
-    margin: 0 auto;
-    border-radius: 2px;
-    background: linear-gradient(90deg, #e53e3e, #f59e0b, #10b981, #3b82f6);
-}
-
-/* Colored text spans */
-.c-red { color: #e53e3e; }
-.c-blue { color: #3b82f6; }
-.c-yellow { color: #f59e0b; }
-.c-green { color: #10b981; }
-
-
-/* 9. Login Page Theme Toggle */
-.login-page #theme-toggle {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-}
-
-
-
-/* 10. new task button*/
-
-.header-controls .button-primary {
-    padding: 0.6rem 1.2rem;
-    width: auto;
-    text-decoration: none;
-    border: none;
+/* Styles for the "Yes, Delete" button */
+.button-danger {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
     border-radius: 8px;
-    font-weight: 600;
-    color: white;
-    background-image: var(--button-gradient);
-    background-size: 200% auto; /* Makes gradient larger for animation */
-    transition: transform 0.2s, box-shadow 0.2s, background-position 0.4s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.header-controls .button-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    background-position: right center; /* This animates the gradient on hover */
-}
-
-
-/* Add this to main.css */
-.header-controls {
-    display: flex;
-    align-items: center; /* This is the magic line that vertically aligns everything */
-    gap: 1rem; /* This adds a nice space between the two buttons */
-}
-
-:root {
-    /* ... your existing variables ... */
-    --accent-color: #007aff; /* Apple Blue */
-
-    /* --- FIND AND REPLACE THIS LINE --- */
-    --button-gradient-light: linear-gradient(90deg, #8b5cf6, #3b82f6, #ef4444); /* From Purple, to Blue, to Red */
-    
-    --button-gradient-dark: linear-gradient(90deg, #ef4444, #f59e0b, #22c55e, #3b82f6);
-}
-
-body.dark-mode {
-    /* ... your existing variables ... */
-    --accent-color: #0a84ff; /* Brighter Apple Blue for dark mode */
-
-    /* --- ADD THIS NEW LINE --- */
-    --button-gradient: var(--button-gradient-dark);
-}
-
-/* Add this right below the body.dark-mode rule */
-:root {
-    --button-gradient: var(--button-gradient-light);
-}
-
-
-/* 11. Form Styling for {{ form.as_p }} */
-/* Styles the overall form container in the task_form.html */
-
-.button-primary {
-    /* Basic size and text settings */
-    font-weight: 600;
-    text-decoration: none;
     border: none;
-    border-radius: 8px;
-    color: white; /* Important to keep text visible */
-    cursor: pointer; /* Makes it look clickable */
-
-    /* Gradient and Animation */
-    background-image: var(--button-gradient);
-    background-size: 200% auto;
-    transition: transform 0.2s, box-shadow 0.2s, background-position 0.4s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.button-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    background-position: right center;
-}
-
-
-.task-form {
-    background-color: var(--card-bg);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: var(--shadow-2);
-}
-
-/* Styles the <p> tag wrapper created by form.as_p */
-.task-form p {
-    margin-bottom: 1rem;
-}
-
-/* Styles the <label> tag */
-.task-form label {
-    display: block; /* Ensures the label takes its own line */
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-    font-size: 1.1rem;
-}
-
-/* Styles all input/textarea/select elements */
-.task-form input[type="text"],
-.task-form input[type="number"],
-.task-form textarea,
-.task-form select {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--input-bg);
-    color: var(--text-color);
-    font-size: 1rem;
-    box-sizing: border-box;
-    transition: border-color 0.2s;
-}
-
-/* Focus state for inputs */
-.task-form input:focus,
-.task-form textarea:focus,
-.task-form select:focus {
-    border-color: var(--accent-color);
-    outline: none;
-}
-
-/* Style error lists */
-.task-form ul.errorlist {
-    color: var(--error-color); /* You'll need a variable for error color, e.g., #ef4444 */
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-}
-
-/* Ensure the Save Task button inherits all the button styles */
-/* The button in task_form.html already has class="button-primary" */
-/* We just need to ensure it applies the same padding/width as the header controls for consistency */
-.task-form .button-primary {
-    /* Inherits all base styles from the generic .button-primary */
-    padding: 0.75rem 1.5rem; /* A slightly larger padding might look better for a full-width action button */
-    width: 100%; /* Makes the button full width to match the inputs */
-}
-
-
-/* Ensure the Save Task button inherits all the button styles */
-/* It already has class="button-primary" in task_form.html */
-.task-form .button-primary {
-    /* Inherits all base styles from the generic .button-primary */
-    padding: 0.75rem 1.5rem; /* Makes the button look substantial */
-    width: 100%; /* Makes the button full width to match the inputs */
-}
-
-
-/* 12. Task Card Header & Edit Button */
-
-.task-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem; /* Adds space between the title/button line and the meta text */
-}
-
-.task-card-header .task-title {
-    flex-grow: 1; /* Allows the title to take up all available space */
-    margin: 0; /* Removes default h3 margin */
-    padding-right: 1rem; /* Prevents long titles from touching the button */
-}
-
-.task-edit-button {
-    /* -- Sizing -- */
-    width: auto; 
-    padding: 0.25rem 0.75rem; 
-    font-size: 0.8rem;
-    font-weight: 500;
-    flex-shrink: 0;
-
-    /* -- Restored Effects -- */
-    color: white;
     text-decoration: none;
-    border: none;
-    border-radius: 6px; /* A slightly smaller radius for a smaller button */
-    background-image: var(--button-gradient);
-    background-size: 200% auto;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s, background-position 0.4s ease;
+    font-weight: 600;
+    text-align: center;
+    background-color: var(--color-red);
+    color: #ffffff;
+    cursor: pointer;
+    transition: filter 0.2s ease;
 }
 
-
-.task-edit-button:hover {
-    /* A more subtle hover effect for this smaller button */
-    border-color: var(--text-color);
-    color: var(--text-color);
-    background-color: var(--quadrant-bg-color);
-    transform: none; /* Removes the translateY effect */
-    box-shadow: 0 2px 4px var(--shadow-color); /* A very light shadow on hover */
-    background-position: initial; /* Resets gradient animation if you keep it */
+.button-danger:hover {
+    filter: brightness(0.9);
 }
 
-/* -- Night mode button text color for ALL buttons -- */
-body.dark-mode .button-primary {
-    color: #000000; /* Sets text to black */
+/* Styles for the "Cancel" button */
+.button-secondary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    text-align: center;
+    border: none; /* Removed border for a solid look */
+    background-color: var(--color-amber); /* Changed to amber */
+    color: #000000; /* Black text for best contrast */
+    cursor: pointer;
+    transition: filter 0.2s ease;
 }
 
-
-/* 13. Task List Scrolling Container */
-
-.task-list-container {
-    max-height: 255px; /* Sets a fixed max height, enough for about 3 cards */
-    overflow-y: auto;  /* Adds a vertical scrollbar ONLY when content exceeds the max-height */
-    padding-right: 8px; /* Adds a little space so cards don't touch the scrollbar */
-    margin-right: -8px; /* Hides the extra space when no scrollbar is present */
-}
-
-/* --- Optional: Prettier Scrollbar Styling --- */
-.task-list-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-.task-list-container::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.task-list-container::-webkit-scrollbar-thumb {
+.button-secondary:hover {
     background-color: var(--border-color);
-    border-radius: 20px;
+}
+
+/* Container for the two buttons on the confirmation page */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end; /* Aligns buttons to the right */
+    margin-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1rem;
+}
+
+/* Styles for the subtle "Delete this task" link on the edit page */
+.delete-link-container {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.delete-link {
+    color: var(--color-red);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.delete-link:hover {
+    text-decoration: underline;
 }

@@ -65,10 +65,15 @@ def create_task(request):
     else:
         # This handles the initial GET request
         form = TaskForm()
+    
+    context = {
+        'form': form,
+        'mode': 'create'
+    }
 
     # This line MUST be at the base indentation level of the function.
     # It should NOT be inside the 'else' block.
-    return render(request, 'tasks/task_form.html', {'form': form})
+    return render(request, 'tasks/task_form.html', context)
 
 
         
@@ -86,6 +91,21 @@ def edit_task(request, pk):
     else:
         # If it's a GET request (just loading the page), populate the form with the existing task's data
         form = TaskForm(instance=task)
+    
+    context = {
+        'form': form,
+        'mode': 'edit'
+    }
 
     # Render the same form template, but with the pre-populated form
-    return render(request, 'tasks/task_form.html', {'form': form})
+    return render(request, 'tasks/task_form.html', context)
+
+@login_required
+def delete_task(request, pk):
+    task = get_object_or_404(Task, pk=pk, assignee=request.user)
+
+    if request.method=="POST":
+        task.delete()
+        return redirect('tasks:matrix')
+    
+    return render(request, 'tasks/task_confirm_delete.html', {'task': task})
