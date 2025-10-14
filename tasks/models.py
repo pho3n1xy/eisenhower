@@ -60,6 +60,7 @@ class Task(models.Model):
 
     # For "Q4 Delete" workflow -> "non-destructive delete"
     is_archived = models.BooleanField(default=False, help_text="Marks a task as archived instead of deleting it.")
+    is_completed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title} ({self.ticket_id})"

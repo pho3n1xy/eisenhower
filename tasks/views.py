@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from .models import Task
 from django.http import HttpResponseRedirect
+from django.db.models import Q
 from .forms import TaskForm
 
 
@@ -14,7 +16,13 @@ def matrix_view(request):
     It fetches all non-archived tasks and categorizes them into the four quadrants.
     """
 
-    tasks = Task.objects.filter(assignee=request.user, is_archived=False)
+    # This is the updated query
+    tasks = Task.objects.filter(
+        assignee=request.user, 
+        is_archived=False
+    ).exclude(
+        Q(status=Task.Status.RESOLVED) | Q(status=Task.Status.CLOSED)
+    )
     
     context = {
         'do_first_tasks': tasks.filter(urgent=True, important=True),
@@ -109,3 +117,19 @@ def delete_task(request, pk):
         return redirect('tasks:matrix')
     
     return render(request, 'tasks/task_confirm_delete.html', {'task': task})
+
+
+@require_POST # ensure view can only be accessed via POST
+@login_required
+def toggle_complete():
+    task = get_object_or_404(Task, pk=pk, assignee=request.user)
+    task.is_completed = not task.is_completed
+    task.save()
+    return redirect('tasks:matrix')
+
+@require_POST
+@login_required
+def archive_completed_tasks(request):
+    tasks_to_archive = Task.objects.filter(assignee=request.user, is_completed=True, is_archived=False)
+    tasks_to_archive.update(is_archive=True)
+    return redirect('tasks:matrix')

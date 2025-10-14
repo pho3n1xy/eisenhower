@@ -22,6 +22,10 @@ urlpatterns = [
     
     #URL to delete tasks
     path('delete/<int:pk>/', views.delete_task, name='delete_task'),
+
+    #URL path to view archived tasks
+    path('archive-completed/', views.archive_completed_tasks, name='archive_completed'),
+
 ]
 
 

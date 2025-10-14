@@ -4,7 +4,7 @@ from .models import Task
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'description', 'category', 'due_date', 'urgent', 'important', 'tags']
+        fields = ['title', 'description', 'category', 'due_date', 'urgent', 'important', 'tags', 'status']
         
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),
@@ -14,4 +14,5 @@ class TaskForm(forms.ModelForm):
             'tags': forms.SelectMultiple(attrs={'class': 'form-select'}),
             'urgent': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'important': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+            'status': forms.Select(attrs={'class': 'form-select'})
         }

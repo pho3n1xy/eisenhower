@@ -402,3 +402,25 @@ body.dark-mode select:focus {
 .delete-link:hover {
     text-decoration: underline;
 }
+
+/* displays status on task card */
+
+.status-in_progress {
+    background-color: var(--color-blue);
+    color: #ffffff;
+}
+.status-pending {
+    background-color: var(--color-amber);
+    color: #000000;
+}
+
+/* For light mode, make open status less prominent */
+.status-open {
+    background-color: var(--border-color);
+    color: var(--secondary-text-color);
+}
+/* For dark mode, make open status less prominent */
+body.dark-mode .status-open {
+    background-color: #3a3a3c;
+    color: #a1a1a6;
+}
