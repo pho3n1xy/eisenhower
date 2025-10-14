@@ -40,7 +40,7 @@ class Task(models.Model):
         
     # --- Core Task Attributes ---
     title = models.CharField(max_length=200)
-    description = models.TextField(blank=True, null=True, help_text="Detailed notes for the task")
+    description = models.TextField(blank=True, null=True, help_text="")
     created_at = models.DateTimeField(auto_now_add=True)
     due_date = models.DateTimeField(blank=True, null=True, help_text="When the task is scheduled to be done")
 
@@ -58,7 +58,7 @@ class Task(models.Model):
     assignee = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='assigned_tasks')
     tags = models.ManyToManyField(Tag, blank=True)
 
-    # For "Q4 Delete" workflow -> "non-destructive delete"
+    # Archiving and Saving Tasks
     is_archived = models.BooleanField(default=False, help_text="Marks a task as archived instead of deleting it.")
     is_completed = models.BooleanField(default=False)
 
@@ -83,6 +83,11 @@ class Task(models.Model):
             return 'delegate'  # Quadrant 3: Not Important & Urgent
         else:
             return 'delete'  # Quadrant 4: Not Important & Not Urgent
+    
+    @property
+    def get_quadrant_display(self):
+        """Returns a human-readable version of the quadrant name."""
+        return self.quadrant.replace('_', ' ').title()
 
 class Comment(models.Model):
     """Represents a comment on a task/ticket."""

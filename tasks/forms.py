@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task
+from .models import Task, Comment, Attachment
 
 class TaskForm(forms.ModelForm):
     class Meta:
@@ -15,4 +15,23 @@ class TaskForm(forms.ModelForm):
             'urgent': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'important': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'status': forms.Select(attrs={'class': 'form-select'})
+        }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={'class': 'form-textarea', 'rows': 3, 'placeholder': 'Add a comment...'}),
+        }
+        labels = {
+            'text': '', # This hides the "Text:" label on the form
+        }
+
+class AttachmentForm(forms.ModelForm):
+    class Meta:
+        model = Attachment
+        fields = ['file']
+        labels = {
+            'file': 'Upload a file',
         }

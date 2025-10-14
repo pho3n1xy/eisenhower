@@ -26,6 +26,8 @@ urlpatterns = [
     #URL path to view archived tasks
     path('archive-completed/', views.archive_completed_tasks, name='archive_completed'),
 
+    #URL to the view a task and all its details, as well as add to it
+    path('task/<int:pk>/', views.task_detail_view, name='task_detail'),
 ]
 
 

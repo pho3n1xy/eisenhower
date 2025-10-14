@@ -1,0 +1,72 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}{{ task.title }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1100px;">
+
+    <header class="header">
+        <h1 class="header-title">{{ task.title }}</h1>
+        <div class="header-controls">
+            <a href="{% url 'tasks:matrix' %}" class="button-secondary">Back to Matrix</a>
+            <a href="{% url 'tasks:edit_task' pk=task.pk %}" class="button-primary">Edit Task</a>
+        </div>
+    </header>
+
+    <main class="detail-grid">
+        <div class="task-details-panel">
+            <h3>Details</h3>
+            <dl>
+                <dt>Status</dt>
+                <dd><span class="task-status-badge status-{{ task.status|lower }}">{{ task.get_status_display }}</span></dd>
+
+                <dt>Category</dt>
+                <dd>{{ task.get_category_display }}</dd>
+
+                <dt>Due Date</dt>
+                <dd>{{ task.due_date|date:"M j, Y, P"|default:"Not set" }}</dd>
+
+                <dt>Quadrant</dt>
+                <dd>{{ task.get_quadrant_display }}</dd>
+            </dl>
+            
+            <h4>Description</h4>
+            <p>{{ task.description|linebreaksbr|default:"No description provided." }}</p>
+        </div>
+
+        <div class="task-activity-panel">
+            <h3>Attachments</h3>
+            <form method="POST" enctype="multipart/form-data" class="attachment-form">
+                {% csrf_token %}
+                {{ attachment_form.as_p }}
+                <button type="submit" name="add_attachment" class="button-secondary">Upload</button>
+            </form>
+            <ul class="attachment-list">
+                {% for attachment in attachments %}
+                    <li><a href="{{ attachment.file.url }}" target="_blank">{{ attachment.file.name|cut:"attachments/" }}</a> <span class="meta-text">by {{ attachment.uploaded_by.username }}</span></li>
+                {% empty %}
+                    <li class="meta-text">No files attached.</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Activity</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ comment_form.text }}
+                <button type="submit" name="add_comment" class="button-primary">Add Comment</button>
+            </form>
+            <div class="comment-list">
+                {% for comment in comments %}
+                    <div class="comment">
+                        <p class="comment-author"><strong>{{ comment.author.username }}</strong> commented {{ comment.created_at|timesince }} ago</p>
+                        <p>{{ comment.text|linebreaksbr }}</p>
+                    </div>
+                {% empty %}
+                    <p class="meta-text">No comments yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+</div>
+{% endblock %}

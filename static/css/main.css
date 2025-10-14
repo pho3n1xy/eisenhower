@@ -372,7 +372,9 @@ body.dark-mode select:focus {
 }
 
 .button-secondary:hover {
-    background-color: var(--border-color);
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Container for the two buttons on the confirmation page */
@@ -423,4 +425,88 @@ body.dark-mode select:focus {
 body.dark-mode .status-open {
     background-color: #3a3a3c;
     color: #a1a1a6;
+}
+
+/* Style for the linked task title on cards */
+.task-title a {
+    color: inherit; /* Makes the link use the same color as the h3 tag */
+    text-decoration: none; /* Removes the underline */
+}
+
+.task-title a:hover {
+    text-decoration: underline; /* Adds an underline on hover for clear feedback */
+}
+
+
+/* --- Styles for Task Detail Page --- */
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.task-details-panel h3,
+.task-activity-panel h3 {
+    margin-top: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.task-details-panel h4 {
+    margin-top: 1.5rem;
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.task-details-panel dl {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0.5rem 1rem;
+}
+
+.task-details-panel dt {
+    font-weight: 600;
+    color: var(--secondary-text-color);
+}
+
+.attachment-form,
+.comment-list {
+    margin-top: 1.5rem;
+}
+
+.attachment-list {
+    list-style: none;
+    padding: 0;
+}
+.attachment-list li {
+    margin-bottom: 0.5rem;
+}
+.attachment-list a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+.attachment-list a:hover {
+    text-decoration: underline;
+}
+.meta-text {
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+}
+
+.comment {
+    background-color: var(--bg-color);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.comment-author {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+}
+.comment p:last-child {
+    margin: 0;
 }

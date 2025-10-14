@@ -1,7 +1,9 @@
 <div class="task-card">
     <div class="task-card-header">
         
-        <h3 class="task-title">{{ task.title }}</h3>
+        <h3 class="task-title">
+            <a href="{% url 'tasks:task_detail' pk=task.pk %}">{{ task.title }}</a>
+        </h3>
         <a href="{% url 'tasks:edit_task' pk=task.pk %}" class="button-primary task-edit-button">Edit</a>
 
     </div>
