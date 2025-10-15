@@ -1,21 +1,37 @@
 from django import forms
 from .models import Task, Comment, Attachment
+from django.contrib.auth.models import User, Group
 
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'description', 'category', 'due_date', 'urgent', 'important', 'tags', 'status']
+        fields = [
+            'title', 'description', 'category', 'urgent', 
+            'important', 'tags', 'status', 'requester', 'assignee'
+            ]
         
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),
             'description': forms.Textarea(attrs={'class': 'form-textarea', 'rows': 4}),
             'category': forms.Select(attrs={'class': 'form-select'}),
-            'due_date': forms.DateTimeInput(attrs={'class': 'form-input', 'type': 'datetime-local'}),
             'tags': forms.SelectMultiple(attrs={'class': 'form-select'}),
             'urgent': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
             'important': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
-            'status': forms.Select(attrs={'class': 'form-select'})
+            'status': forms.Select(attrs={'class': 'form-select'}),
+            'requester': forms.Select(attrs={'class': 'form-select'}),
+            'assignee': forms.Select(attrs={'class': 'form-select'}),
         }
+
+     # This new method adds the filtering logic
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Filter the 'assignee' dropdown to only show users in the 'Operators' group
+        try:
+            operators_group = Group.objects.get(name='Operators')
+            self.fields['assignee'].queryset = operators_group.user_set.all()
+        except Group.DoesNotExist:
+            # If the group doesn't exist, the dropdown will be empty
+            self.fields['assignee'].queryset = User.objects.none()
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -43,6 +59,7 @@ class StatusUpdateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         # This adds an HTML attribute to the status dropdown widget
         self.fields['status'].widget.attrs.update({
             'class': 'form-select-sm', # A new class for a smaller select box

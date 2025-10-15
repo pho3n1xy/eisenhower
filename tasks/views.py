@@ -63,8 +63,6 @@ def create_task(request):
         form = TaskForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            task.requester = request.user
-            task.assignee = request.user
             task.save()
             form.save_m2m()
             return redirect('tasks:matrix')
