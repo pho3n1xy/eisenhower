@@ -178,9 +178,9 @@ class Task(models.Model):
         elif self.important and not self.urgent:
             return 'schedule'  # Quadrant 2: Important & Not Urgent
         elif not self.important and self.urgent:
-            return 'delegate'  # Quadrant 3: Not Important & Urgent
+            return 'queue'  # Quadrant 3: Not Important & Urgent
         else:
-            return 'delete'  # Quadrant 4: Not Important & Not Urgent
+            return 'backlog'  # Quadrant 4: Not Important & Not Urgent
     
     @property
     def get_quadrant_display(self):
