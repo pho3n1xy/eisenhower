@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 from .models import Task
 from django.http import HttpResponseRedirect
 from django.db.models import Q
+from django.contrib.auth.models import User
 from .forms import TaskForm, CommentForm, AttachmentForm, StatusUpdateForm
 
 
@@ -185,3 +186,35 @@ def task_detail_view(request, pk):
         'status_form': status_form
     }
     return render(request, 'tasks/task_detail.html', context)
+
+
+@login_required
+def ticket_list_view(request):
+    # Start with all non-archived tasks, ordered by most recently created
+    tasks = Task.objects.filter(is_archived=False).order_by('-created_at')
+
+    #Get the filter values from the URL (e.g., ?status=OPEN)
+    status_filter = request.GET.get('status')
+    requester_filter = request.GET.get('requester')
+    assignee_filter = request.GET.get('assignee')
+
+    #Apply filters to the queryset if they exist
+    if status_filter: 
+        tasks = tasks.filter(status=status_filter)
+
+    if requester_filter:
+        tasks = tasks.filter(requester__id=requester_filter)
+
+    if assignee_filter: 
+        tasks = tasks.filter(assignee__id=assignee_filter)
+
+    context = {
+        'tasks': tasks, 
+        'status_choices': Task.Status.choices, #pass choices for the dropdown
+        'all_users': User.objects.all(), 
+        'current_status': status_filter,
+        'current_requester': int(requester_filter) if requester_filter else None,
+        'current_assignee': int(assignee_filter) if assignee_filter else None,
+    }
+
+    return render(request, 'tasks/ticket_list.html', context)

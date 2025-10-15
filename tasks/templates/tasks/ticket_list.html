@@ -1,0 +1,67 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Ticket Viewer{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="header">
+        <h1 class="header-title">All Tickets</h1>
+        <div class="header-controls">
+            <a href="{% url 'tasks:matrix' %}" class="button-secondary">Back to Matrix</a>
+        </div>
+    </header>
+
+    <form method="GET" class="filter-form">
+        <select name="status">
+            <option value="">All Statuses</option>
+            {% for value, display in status_choices %}
+                <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ display }}</option>
+            {% endfor %}
+        </select>
+        <select name="requester">
+            <option value="">All Requesters</option>
+            {% for user in all_users %}
+                <option value="{{ user.id }}" {% if current_requester == user.id %}selected{% endif %}>{{ user.username }}</option>
+            {% endfor %}
+        </select>
+        <select name="assignee">
+            <option value="">All Assignees</option>
+            {% for user in all_users %}
+                <option value="{{ user.id }}" {% if current_assignee == user.id %}selected{% endif %}>{{ user.username }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="button-primary">Filter</button>
+        <a href="{% url 'tasks:ticket_list' %}" class="button-primary">Clear</a>
+    </form>
+
+    <table class="ticket-table">
+        <thead>
+            <tr>
+                <th>Ticket #</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Requester</th>
+                <th>Assignee</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td><a href="{% url 'tasks:task_detail' pk=task.pk %}">{{ task.ticket_number }}</a></td>
+                    <td>{{ task.title }}</td>
+                    <td><span class="task-status-badge status-{{ task.status|lower }}">{{ task.get_status_display }}</span></td>
+                    <td>{{ task.requester.username|default:"-" }}</td>
+                    <td>{{ task.assignee.username|default:"-" }}</td>
+                    <td>{{ task.created_at|date:"M j, Y" }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">No tickets found matching your criteria.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

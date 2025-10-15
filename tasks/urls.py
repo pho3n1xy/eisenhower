@@ -28,6 +28,9 @@ urlpatterns = [
 
     #URL to the view a task and all its details, as well as add to it
     path('task/<int:pk>/', views.task_detail_view, name='task_detail'),
+
+    #URL to the ticket list
+    path('tickets/', views.ticket_list_view, name='ticket_list')
 ]
 
 
