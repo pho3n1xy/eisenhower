@@ -136,3 +136,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Redirect to this URL when a user needs to log in
 LOGIN_URL = 'tasks:login'
+LOGIN_REDIRECT_URL = 'tasks:matrix'

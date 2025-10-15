@@ -1,4 +1,10 @@
 // app.js
+console.log("app.js file is running!");
+
+document.addEventListener('DOMContentLoaded', () => {
+    // ... rest of your code
+});
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Theme Toggle Logic (with localStorage) ---

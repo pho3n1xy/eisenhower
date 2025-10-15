@@ -11,8 +11,10 @@
         </h1>
 
         <div class="header-controls">
+            <span class="welcome-text">Welcome, {{ user.username }}</span>
             <a href="{% url 'tasks:ticket_list' %}" class="button-primary">Tickets View</a>
             <a href="{% url 'tasks:create' %}" class="button-primary">New Task</a>
+            <a href="{% url 'tasks:logout' %}" class="button-primary">Logout</a>
         </div>
     </header>
 

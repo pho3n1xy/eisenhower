@@ -669,3 +669,24 @@ body.dark-mode .ticket-table a {
     padding: 2rem;
     color: var(--secondary-text-color);
 }
+
+/* --- Styles for Scrollable Ticket Table --- */
+
+.table-container {
+    max-height: 70vh; /* Sets the max height to 70% of the viewport's height */
+    overflow-y: auto; /* Adds a vertical scrollbar when needed */
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.ticket-table thead th {
+    position: sticky; /* This makes the header row 'stick' */
+    top: 0; /* Sticks it to the top of the scrolling container */
+    background-color: var(--quadrant-bg-color); /* Ensures content scrolls under it */
+    box-shadow: 0 2px 2px var(--shadow-color); /* Adds a subtle shadow under the header */
+}
+
+/* Remove the bottom border from the main table tag, as the container now has a border */
+.ticket-table {
+    border-bottom: none;
+}
