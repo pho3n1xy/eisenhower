@@ -129,7 +129,7 @@ class Task(models.Model):
         
         # If it was a new task, generate the ticket number
         if is_new and not self.ticket_number:
-            self.ticket_number = f"OHM{self.pk:13d}"
+            self.ticket_number = f"OHM{self.pk:013d}"
             # Save again just to update this one field
             super().save(update_fields=['ticket_number'])
 

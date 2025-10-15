@@ -51,3 +51,56 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const stepUsername = document.getElementById('step-username');
+    const stepPassword = document.getElementById('step-password');
+    const nextBtn = document.getElementById('next-btn');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const lockedUsernameDisplay = document.getElementById('locked-username');
+    const loginForm = document.getElementById('login-form');
+
+    nextBtn.addEventListener('click', () => {
+        // If username is not empty
+        if (usernameInput.value.trim() !== '') {
+            lockedUsernameDisplay.textContent = usernameInput.value;
+            stepUsername.classList.add('hidden');
+            stepPassword.classList.remove('hidden');
+            passwordInput.focus();
+        }
+    });
+
+    // Allow pressing Enter on username field to go to the next step
+    usernameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Prevent form submission
+            nextBtn.click();
+        }
+    });
+
+// Theme toggle logic
+const themeToggleBtn = document.getElementById('theme-toggle');
+
+const applyTheme = (theme) => {
+    if (theme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+};
+
+const toggleTheme = () => {
+    const isDarkMode = document.body.classList.toggle('dark-mode');
+    const currentTheme = isDarkMode ? 'dark' : 'light';
+    localStorage.setItem('theme', currentTheme);
+};
+
+// Apply saved theme on page load
+const savedTheme = localStorage.getItem('theme') || 'light';
+applyTheme(savedTheme);
+
+themeToggleBtn.addEventListener('click', toggleTheme);
+});
+
