@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from django.contrib import admin
-from .models import Task, Tag, Comment, Attachment
+from .models import Task, Tag, Comment, Attachment, SLAPolicy
 
 # To make the admin interface more useful, we can customize how models are displayed.
 
@@ -41,7 +41,7 @@ class TaskAdmin(admin.ModelAdmin):
     )
 
     def save_model(self, request, obj, form, change):
-        """Automatically set the reporter to the current user when a task is created."""
+        """Automatically set the requester to the current user when a task is created."""
         if not obj.pk:  # If the object is being created
             obj.requester = request.user
         super().save_model(request, obj, form, change)
@@ -56,3 +56,13 @@ class TagAdmin(admin.ModelAdmin):
 # If you wanted to see them as separate items in the admin, you would add:
 # admin.site.register(Comment)
 # admin.site.register(Attachment)
+
+
+@admin.register(SLAPolicy)
+class SLAPolicyAdmin(admin.ModelAdmin):
+    list_display = ('name', 'quadrant', 'resolution_time')
+
+
+# You can also register your other models here if you want
+# admin.site.register(Task)
+# admin.site.register(Tag)

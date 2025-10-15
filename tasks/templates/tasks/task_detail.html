@@ -9,9 +9,21 @@
         <h1 class="header-title">{{ task.title }}</h1>
         <div class="header-controls">
             <a href="{% url 'tasks:matrix' %}" class="button-secondary">Back to Matrix</a>
-            <a href="{% url 'tasks:edit_task' pk=task.pk %}" class="button-primary">Edit Task</a>
         </div>
     </header>
+    <div class="sla-bar-container">
+        <div class="sla-info">
+            <span>Created: {{ task.created_at|date:"M j, Y, P" }}</span>
+            {% if task.completed_at %}
+                <span class="sla-achieved">Achieved: {{ task.completed_at|date:"M j, Y, P" }}</span>
+            {% elif task.due_date %}
+                <span>Next SLA: {{ task.due_date|date:"M j, Y, P" }}</span>
+            {% endif %}
+        </div>
+        <div class="sla-progress-bar">
+            <div class="sla-progress" style="width: {{ task.sla_progress_percent }}%;"></div>
+        </div>
+    </div>
 
     <main class="detail-grid">
         <div class="task-details-panel">

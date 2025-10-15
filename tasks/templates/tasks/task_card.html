@@ -8,6 +8,7 @@
 
     </div>
     <p class="task-meta">
+        <span class="ticket-number">{{ task.ticket_number }}</span> &middot;
         <span class="task-status-badge status-{{ task.status|lower }}">{{ task.get_status_display }}</span> &middot;
         {{ task.get_category_display }}
         {% if task.due_date %}
