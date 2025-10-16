@@ -23,14 +23,21 @@ urlpatterns = [
     #URL to delete tasks
     path('delete/<int:pk>/', views.delete_task, name='delete_task'),
 
-    #URL path to view archived tasks
-    path('archive-completed/', views.archive_completed_tasks, name='archive_completed'),
-
     #URL to the view a task and all its details, as well as add to it
     path('task/<int:pk>/', views.task_detail_view, name='task_detail'),
 
     #URL to the ticket list
-    path('tickets/', views.ticket_list_view, name='ticket_list')
+    path('tickets/', views.ticket_list_view, name='ticket_list'), 
+
+    #URL for submitting a ticket
+    path('submit/', views.submit_ticket_view, name='submit_ticket'),
+
+    #URL ticket submissions success
+    path('submit/success/<str:ticket_number>/', views.submit_success_view, name = 'submit_success'), 
+
+    #URL for requesters to see their tickets
+    path('my-tickets/', views.my_tickets_view, name='my_tickets'),
+
 ]
 
 

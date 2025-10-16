@@ -2,11 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
-from .models import Task
+from .models import Task, Comment, Attachment, Tag, SLAPolicy
 from django.http import HttpResponseRedirect
 from django.db.models import Q
-from django.contrib.auth.models import User
-from .forms import TaskForm, CommentForm, AttachmentForm, StatusUpdateForm
+from django.contrib.auth.models import User, Group
+from django.core.exceptions import PermissionDenied
+from .forms import TaskForm, CommentForm, AttachmentForm, StatusUpdateForm, UserTicketForm
+
+
+#helper function to check is user if operator
+def is_operator(user):
+    #checks if the user is in the "Operators" group
+    return user.groups.filter(name='Operators').exists()
 
 
 #Decorator to protect the matrix view
@@ -45,7 +52,11 @@ def login_view(request):
         
         if user is not None:
             login(request, user)
-            return redirect('tasks:matrix')
+
+            if is_operator(user):
+                return redirect('tasks:matrix')
+            else:
+                return redirect('tasks:submit_ticket')
         else:
             error = "Invalid username or password. Please try again."
 
@@ -86,8 +97,12 @@ def create_task(request):
         
 @login_required
 def edit_task(request, pk):
+    #only allow operators to access this page
+    if not is_operator(request.user):
+        raise PermissionDenied
+
     # Get the specific task object we want to edit, or return a 404 error if it doesn't exist
-    task = get_object_or_404(Task, pk=pk, assignee=request.user)
+    task = get_object_or_404(Task, pk=pk)
 
     if request.method == 'POST':
         # If the form is being submitted, populate the form with the submitted data AND the existing task instance
@@ -109,7 +124,11 @@ def edit_task(request, pk):
 
 @login_required
 def delete_task(request, pk):
-    task = get_object_or_404(Task, pk=pk, assignee=request.user)
+    # only allow Operators to access this page
+    if not is_operator(request.user): 
+        raise PermissionDenied
+
+    task = get_object_or_404(Task, pk=pk)
 
     if request.method=="POST":
         task.delete()
@@ -118,25 +137,17 @@ def delete_task(request, pk):
     return render(request, 'tasks/task_confirm_delete.html', {'task': task})
 
 
-@require_POST # ensure view can only be accessed via POST
-@login_required
-def toggle_complete():
-    task = get_object_or_404(Task, pk=pk, assignee=request.user)
-    task.is_completed = not task.is_completed
-    task.save()
-    return redirect('tasks:matrix')
-
-@require_POST
-@login_required
-def archive_completed_tasks(request):
-    tasks_to_archive = Task.objects.filter(assignee=request.user, is_completed=True, is_archived=False)
-    tasks_to_archive.update(is_archive=True)
-    return redirect('tasks:matrix')
-
-
 @login_required
 def task_detail_view(request, pk):
-    task = get_object_or_404(Task, pk=pk, assignee=request.user)
+
+    #if user is an operator
+    if is_operator(request.user):
+        task = get_object_or_404(Task, pk=pk)
+
+    else: 
+        #regular users can only view tasks they have requested
+        task = get_object_or_404(Task, pk=pk, requester=request.user)
+
     comments = task.comments.all().order_by('-created_at')
     attachments = task.attachments.all().order_by('-uploaded_at')
 
@@ -218,3 +229,57 @@ def ticket_list_view(request):
     }
 
     return render(request, 'tasks/ticket_list.html', context)
+
+@login_required
+def submit_ticket_view(request):
+    if is_operator(request.user):
+        # If an operator lands here, send them to the matrix
+        return redirect('tasks:matrix')
+    
+    if request.method == "POST":
+        form = UserTicketForm(request.POST, request.FILES)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.requester = request.user
+            task.assignee = None
+            task.status = Task.Status.OPEN
+            task.urgent = False
+            task.important = False
+            task.save()
+
+            uploaded_file = form.cleaned_data.get('attachment_file')
+            if uploaded_file:
+                Attachment.objects.create(
+                    task=task,
+                    file=uploaded_file,
+                    original_filename=uploaded_file.name,
+                    uploaded_by=request.user
+                )
+
+            return redirect('tasks:submit_success', ticket_number=task.ticket_number)
+        # If the form is invalid, the code falls through to the final return statement below
+    else:
+        # This handles the initial GET request
+        form = UserTicketForm()
+    
+    # --- THIS LINE IS THE FIX ---
+    # It must be at the base indentation level of the function
+    # so it can handle all cases that don't redirect (like GET requests).
+    return render(request, 'tasks/submit_ticket.html', {'form': form})
+
+@login_required
+def submit_success_view(request, ticket_number):
+    return render(request, 'tasks/submit_success.html', {'ticket_number': ticket_number})
+
+
+@login_required
+def my_tickets_view(request):
+    if is_operator(request.user):
+        # Operators should use the full ticket viewer
+        return redirect('tasks:ticket_list')
+
+    tasks = Task.objects.filter(requester=request.user, is_archived=False).order_by('-created_at')
+    context = {
+        'tasks': tasks,
+    }
+    return render(request, 'tasks/my_tickets.html', context)

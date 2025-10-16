@@ -9,6 +9,7 @@
         <h1 class="header-title">{{ task.title }}</h1>
         <div class="header-controls">
             <a href="{% url 'tasks:matrix' %}" class="button-secondary">Back to Matrix</a>
+            <a href="{% url 'tasks:edit_task' pk=task.pk %}" class="button-primary task-edit-button">Edit</a>
         </div>
     </header>
     <div class="sla-bar-container">

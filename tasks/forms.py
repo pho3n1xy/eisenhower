@@ -2,6 +2,7 @@ from django import forms
 from .models import Task, Comment, Attachment
 from django.contrib.auth.models import User, Group
 
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
@@ -66,3 +67,20 @@ class StatusUpdateForm(forms.ModelForm):
             'onchange': 'this.form.submit()' # This JavaScript submits the form automatically on change
         })
         self.fields['status'].label = "" # Hide the "Status:" label
+
+class UserTicketForm(forms.ModelForm):
+    # add this new field for the file upload
+    attachment_file = forms.FileField(
+        required=False,
+        label = "Attach a file (optional)",
+        widget=forms.ClearableFileInput(attrs={'class': 'form-input'})
+    )
+
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'category']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-input'}),
+            'description': forms.Textarea(attrs={'class': 'form-textarea', 'rows': 5}),
+            'category': forms.Select(attrs={'class': 'form-select'})
+        }

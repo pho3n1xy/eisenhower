@@ -1,0 +1,17 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Success{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; text-align: center; margin-top: 5rem;">
+    <div class="login-box">
+        <h1 class="header-title">Ticket Submitted!</h1>
+        <p>Your ticket has been created successfully. Your ticket number is:</p>
+        <h2 style="letter-spacing: 1px;">{{ ticket_number }}</h2>
+        <div class="form-actions" style="justify-content: center;">
+            <a href="{% url 'tasks:submit_ticket' %}" class="button-primary">Submit Another</a>
+            <a href="{% url 'tasks:my_tickets' %}" class="button-primary">View My Tickets</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

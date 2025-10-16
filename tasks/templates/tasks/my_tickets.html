@@ -1,0 +1,49 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}My Tickets{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="header">
+        <h1 class="header-title">
+            <span class="c-blue">My</span>
+            <span class="c-green">Submitted</span>
+            <span class="c-amber">Tickets</span>
+        </h1>
+        <div class="header-controls">
+            <span class="welcome-text">Welcome, {{ user.username }}</span>
+            <a href="{% url 'tasks:submit_ticket' %}" class="button-primary">Submit New Ticket</a>
+            <a href="{% url 'tasks:logout' %}" class="button-secondary">Logout</a>
+        </div>
+    </header>
+
+    <div class="table-container">
+        <table class="ticket-table">
+            <thead>
+                <tr>
+                    <th>Ticket #</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Assignee</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td><a href="{% url 'tasks:task_detail' pk=task.pk %}">{{ task.ticket_number }}</a></td>
+                        <td>{{ task.title }}</td>
+                        <td><span class="task-status-badge status-{{ task.status|lower }}">{{ task.get_status_display }}</span></td>
+                        <td>{{ task.assignee.username|default:"Unassigned" }}</td>
+                        <td>{{ task.created_at|date:"M j, Y" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">You have not submitted any tickets.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

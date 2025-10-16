@@ -1,0 +1,25 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}User Portal{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px;">
+    <header class="header">
+        <h1 class="header-title">
+            <span class="c-blue">OHM</span> <span class="c-amber">Desk</span>
+        </h1>
+        <div class="header-controls">
+            <span class="welcome-text">Welcome, {{ user.username }}</span>
+            <a href="{% url 'tasks:my_tickets' %}" class="button-secondary">My Tickets</a>
+            <a href="{% url 'tasks:logout' %}" class="button-secondary">Logout</a>
+        </div>
+    </header>
+    
+    <form method="post" class="task-form" enctype="multipart/form-data">
+        <h3 style="text-align: center; margin-bottom: 2rem;">Submit a New Ticket</h3>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button-primary" style="margin-top: 1rem;">Submit Ticket</button>
+    </form>
+</div>
+{% endblock %}
