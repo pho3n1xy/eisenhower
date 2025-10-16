@@ -18,60 +18,76 @@
         </div>
     </header>
 
-    <main class="matrix-grid">
-        <div class="quadrant do-first">
+    <main class="dashboard-layout">
+        <div class="quadrant">
             <div class="quadrant-header">
-                <h2 class="quadrant-title">Urgent & Important</h2>
-                <p class="quadrant-subtitle">Do First</p>
+                <h2 class="quadrant-title"> Unassigned Tickets </h2>
+                <p class="quadrant-subtitle"> Triage Queue</p>
             </div>
             <div class="task-list-container">
-                {% for task in do_first_tasks %}
-                    {% include "tasks/task_card.html" with task=task %}
+                {% for task in unassigned_tasks %}
+                    {% include 'tasks/task_card.html' with task=task %}
                 {% empty %}
-                    <p class="task-list-empty">No tasks in this quadrant.</p>
-                {% endfor %}
-            </div> 
-        </div>
-
-        <div class="quadrant schedule">
-            <div class="quadrant-header">
-                <h2 class="quadrant-title">Not Urgent & Important</h2>
-                <p class="quadrant-subtitle">Schedule</p>
-            </div>
-            <div class="task-list-container">
-                {% for task in schedule_tasks %}
-                {% include "tasks/task_card.html" with task=task %}
-            {% empty %}
-                <p class="task-list-empty">No tasks in this quadrant.</p>
-            {% endfor %}
-            </div>
-        </div>
-
-        <div class="quadrant delegate">
-            <div class="quadrant-header">
-                <h2 class="quadrant-title">Urgent & Not Important</h2>
-                <p class="quadrant-subtitle">Queue</p>
-            </div>
-            <div class="task-list-container">
-                {% for task in delegate_tasks %}
-                    {% include "tasks/task_card.html" with task=task %}
-                {% empty %}
-                    <p class="task-list-empty">No tasks in this quadrant.</p>
+                    <p class="task-list-empty"> The triage queue is empty. </p>
                 {% endfor %}
             </div>
         </div>
 
-        <div class="quadrant delete">
-            <div class="quadrant-header">
-                <h2 class="quadrant-title">Not Urgent & Not Important</h2>
-                <p class="quadrant-subtitle">Backlog / Archive</p>
+        <div class="matrix-grid">
+            <div class="quadrant do-first">
+                <div class="quadrant-header">
+                    <h2 class="quadrant-title">Urgent & Important</h2>
+                    <p class="quadrant-subtitle">Do First</p>
+                </div>
+                <div class="task-list-container">
+                    {% for task in do_first_tasks %}
+                        {% include "tasks/task_card.html" with task=task %}
+                    {% empty %}
+                        <p class="task-list-empty">No tasks in this quadrant.</p>
+                    {% endfor %}
+                </div> 
             </div>
-            <div class="task-list-container">
-                {% for task in delete_tasks %}
+
+            <div class="quadrant schedule">
+                <div class="quadrant-header">
+                    <h2 class="quadrant-title">Not Urgent & Important</h2>
+                    <p class="quadrant-subtitle">Schedule</p>
+                </div>
+                <div class="task-list-container">
+                    {% for task in schedule_tasks %}
                     {% include "tasks/task_card.html" with task=task %}
                 {% empty %}
                     <p class="task-list-empty">No tasks in this quadrant.</p>
                 {% endfor %}
+                </div>
+            </div>
+
+            <div class="quadrant delegate">
+                <div class="quadrant-header">
+                    <h2 class="quadrant-title">Urgent & Not Important</h2>
+                    <p class="quadrant-subtitle">Queue</p>
+                </div>
+                <div class="task-list-container">
+                    {% for task in delegate_tasks %}
+                        {% include "tasks/task_card.html" with task=task %}
+                    {% empty %}
+                        <p class="task-list-empty">No tasks in this quadrant.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="quadrant delete">
+                <div class="quadrant-header">
+                    <h2 class="quadrant-title">Not Urgent & Not Important</h2>
+                    <p class="quadrant-subtitle">Backlog / Archive</p>
+                </div>
+                <div class="task-list-container">
+                    {% for task in delete_tasks %}
+                        {% include "tasks/task_card.html" with task=task %}
+                    {% empty %}
+                        <p class="task-list-empty">No tasks in this quadrant.</p>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </main>

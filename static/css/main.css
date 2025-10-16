@@ -325,15 +325,6 @@ body.dark-mode select:focus {
 .c-amber { color: var(--color-amber); }
 .c-green { color: var(--color-green); }
 
-/* 10. Responsive Design */
-@media (max-width: 768px) {
-    .matrix-grid {
-        grid-template-columns: 1fr;
-    }
-    .header-title {
-        font-size: 2rem;
-    }
-}
 
 /* Utility class to hide elements for JavaScript interaction */
 .hidden {
@@ -690,3 +681,48 @@ body.dark-mode .ticket-table a {
 .ticket-table {
     border-bottom: none;
 }
+
+/* --- Main Dashboard Layout --- */
+.dashboard-layout {
+    display: grid;
+    /* Give the left column a fixed width and the matrix the rest of the space */
+    grid-template-columns: 350px 1fr;
+    gap: 1.5rem;
+    /* 'stretch' is the default, but we'll be explicit to ensure columns match height */
+    align-items: stretch;
+}
+
+/* --- Triage Queue Specific Styles --- */
+.triage-queue .task-list-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    min-height: 32rem;
+}
+
+.triage-queue {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Optional: Style the scrollbar for the triage queue */
+.triage-queue .task-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+.triage-queue .task-list-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.triage-queue .task-list-container::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+    .dashboard-layout,
+    .detail-grid,
+    .matrix-grid {
+        grid-template-columns: 1fr;
+    }
+    .header-title {
+        font-size: 2rem;
+    }
+} 

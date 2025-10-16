@@ -24,19 +24,29 @@ def matrix_view(request):
     It fetches all non-archived tasks and categorizes them into the four quadrants.
     """
 
-    # This is the updated query
+    # grabs all tasks assigned to the user
     tasks = Task.objects.filter(
         assignee=request.user, 
         is_archived=False
     ).exclude(
         Q(status=Task.Status.RESOLVED) | Q(status=Task.Status.CLOSED)
     )
+
+    #grabs all unassigned tasks
+    unassigned_tasks = Task.objects.filter(
+        assignee=None,
+        is_archived=False,
+    ).exclude(
+        Q(status=Task.Status.RESOLVED) | Q(status=Task.Status.CLOSED)
+    )
     
     context = {
+        'unassigned_tasks': unassigned_tasks,
         'do_first_tasks': tasks.filter(urgent=True, important=True),
         'schedule_tasks': tasks.filter(urgent=False, important=True),
         'delegate_tasks': tasks.filter(urgent=True, important=False),
         'delete_tasks': tasks.filter(urgent=False, important=False),
+
     }
     return render(request, 'tasks/matrix.html', context)
 
