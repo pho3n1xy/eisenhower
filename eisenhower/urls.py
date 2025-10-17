@@ -17,15 +17,23 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-# Add these two imports
 from django.conf import settings
 from django.conf.urls.static import static
+
+from django.views.generic.base import RedirectView
+from django.urls import reverse_lazy
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
     #tells Django to look for any URL that isn't admin.
     path('', include('tasks.urls')), 
+
+    path(
+        'accounts/3rdparty/login/cancelled/', 
+        RedirectView.as_view(url=reverse_lazy('tasks:login')), 
+        name='socialaccount_login_cancelled_override'
+    ),
 
     #URL used for 0Auth
     path('accounts/', include('allauth.urls')),

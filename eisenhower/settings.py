@@ -27,6 +27,8 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Debug is set to True in the .env file for local development.
@@ -43,14 +45,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Add our 'tasks' app here
-    'tasks',
+    'django.contrib.sites',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google', #for Google OAuth
+     # Add our 'tasks' app here
+    'tasks',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -62,6 +67,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
+
 
 ROOT_URLCONF = 'eisenhower.urls'
 
@@ -88,6 +94,15 @@ DATABASES = {
     'default': dj_database_url.config(conn_max_age=600, ssl_require=False)
 }
 
+SOCIALACCOUNT_PROVIDERS={
+    'google':{
+        'APP':{
+            'client_id': CLIENT_ID,
+            'secret': CLIENT_SECRET,
+            'key': ''
+        },
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -150,15 +165,16 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+
 SITE_ID = 1
 
-# allauth settings
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_UNIQUE_EMAIL = True
-
+# === Allauth Settings for Google-Only Login ===
 # Where to redirect after login
-LOGIN_REDIRECT_URL = 'tasks:matrix'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_ALLOW_REGISTRATION = False
+SOCIALACCOUNT_AUTO_SIGNUP = False
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+ACCOUNT_LOGIN_METHODS={'email'}
+ACCOUNT_EMAIL_REQUIRED= ['email']
+SOCIALACCOUNT_ADAPTER = "tasks.adapter.GoogleSocialAccountAdapter"
+

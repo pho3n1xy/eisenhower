@@ -768,3 +768,11 @@ body.dark-mode .ticket-table a {
     font-weight: 500;
     text-transform: uppercase;
 }
+
+/* Style for the Google logo in dark mode */
+body.dark-mode .button-google img {
+    background-color: #ffffff; /* Add a white background for the circle */
+    border-radius: 50%;    /* Make the background circular */
+    padding: 2px;          /* Add a little space around the 'G' */
+    box-sizing: border-box;
+}
