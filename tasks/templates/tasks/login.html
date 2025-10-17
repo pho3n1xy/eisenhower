@@ -1,6 +1,6 @@
 {% extends "tasks/base.html" %}
 {% load static %}
-
+{% load socialaccount %}
 {% block title %}Login{% endblock %}
 
 {% block body_class %}login-page{% endblock %}
@@ -29,6 +29,15 @@
                     <input type="text" name="username" id="username" required>
                 </div>
                 <button type="button" class="button-primary" id="next-btn">Next</button>
+
+                <div class="divider">or</div>
+                <div class="social-login">
+                    {% provider_login_url 'google' as google_url %}
+                    <a href="{{ google_url }}" class="button-google">
+                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+                        Sign in with Google
+                    </a>
+                </div>
             </div>
 
             <div id="step-password" class="hidden">

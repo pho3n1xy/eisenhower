@@ -8,8 +8,12 @@
     <header class="header">
         <h1 class="header-title">{{ task.title }}</h1>
         <div class="header-controls">
-            <a href="{% url 'tasks:matrix' %}" class="button-secondary">Back to Matrix</a>
-            <a href="{% url 'tasks:edit_task' pk=task.pk %}" class="button-primary task-edit-button">Edit</a>
+            {% if is_user_operator %}
+                <a href="{% url 'tasks:matrix' %}" class="button-primary">Back to Matrix</a>
+                <a href="{% url 'tasks:edit_task' pk=task.pk %}" class="button-primary task-edit-button">Edit</a>
+            {% elif not is_user_operator %}
+                <a href="{% url 'tasks:my_tickets' %}" class="button-secondary">Back to My Tickets</a>
+            {% endif %}   
         </div>
     </header>
     <div class="sla-bar-container">
@@ -32,11 +36,15 @@
             <dl>
                 <dt>Status</dt>
                 <dd>
-                    <form method="POST" class="status-update-form">
-                        {% csrf_token %}
-                        <input type="hidden" name="form_identifier" value="update_status">
-                        {{ status_form.status }}
-                    </form>
+                    {% if is_user_operator %}
+                        <form method="POST" class="status-update-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="form_identifier" value="update_status">
+                            {{ status_form.status }}
+                        </form>
+                    {% else %}
+                        <span class="task-status-badge status-{{ task.status|lower }}">{{ task.get_status_display }}</span>
+                    {% endif %}
                 </dd>
 
                 <dt>Category</dt>

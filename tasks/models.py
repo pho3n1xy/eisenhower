@@ -215,8 +215,8 @@ class SLAPolicy(models.Model):
     QUADRANT_CHOICES = [
         ('do_first', 'Do First (Urgent & Important)'),
         ('schedule', 'Schedule (Important & Not Urgent)'),
-        ('delegate', 'Queue (Urgent & Not Important)'),
-        ('delete', 'Backlog / Archive (Not Urgent & Not Important)'),
+        ('queue', 'Queue (Urgent & Not Important)'),
+        ('backlog', 'Backlog / Archive (Not Urgent & Not Important)'),
     ]
 
     name = models.CharField(max_length=100, help_text="e.g., Critical, High, Medium, Low")

@@ -38,6 +38,7 @@ urlpatterns = [
     #URL for requesters to see their tickets
     path('my-tickets/', views.my_tickets_view, name='my_tickets'),
 
+
 ]
 
 

@@ -23,7 +23,9 @@ def matrix_view(request):
     This view handles the logic for displaying the main Eisenhower Matrix.
     It fetches all non-archived tasks and categorizes them into the four quadrants.
     """
-
+    if not is_operator(request.user):
+        return redirect('tasks:submit_ticket')
+    
     # grabs all tasks assigned to the user
     tasks = Task.objects.filter(
         assignee=request.user, 
@@ -204,7 +206,8 @@ def task_detail_view(request, pk):
         'attachments': attachments,
         'comment_form': comment_form,
         'attachment_form': attachment_form,
-        'status_form': status_form
+        'status_form': status_form,
+        'is_user_operator': is_operator(request.user), 
     }
     return render(request, 'tasks/task_detail.html', context)
 

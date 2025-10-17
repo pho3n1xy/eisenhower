@@ -726,3 +726,45 @@ body.dark-mode .ticket-table a {
         font-size: 2rem;
     }
 } 
+
+/* --- Styles for Social Login Button --- */
+
+.social-login {
+    /* This will apply to the container holding the button */
+}
+
+.button-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.6rem;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    background-color: var(--quadrant-bg-color);
+    transition: background-color 0.2s ease;
+}
+
+.button-google:hover {
+    background-color: var(--bg-color);
+}
+
+.button-google img {
+    width: 20px;
+    height: 20px;
+}
+
+.divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    color: var(--secondary-text-color);
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}

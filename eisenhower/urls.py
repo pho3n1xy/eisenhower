@@ -25,7 +25,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     #tells Django to look for any URL that isn't admin.
-    path('', include('tasks.urls'))
+    path('', include('tasks.urls')), 
+
+    #URL used for 0Auth
+    path('accounts/', include('allauth.urls')),
 ]
 
 # Add this line at the end
