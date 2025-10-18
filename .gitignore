@@ -1,6 +1,14 @@
-
+# Environment variables
 .env
 
+# Virtual Environment
+venv/
+*/venv/
 
-.venv/
-*/.venv/
+# Django project specific files
+__pycache__/
+*.pyc
+*.log
+
+# Operating system files
+.DS_Store
