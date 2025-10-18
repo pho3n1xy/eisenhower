@@ -9,6 +9,11 @@
             <span class="c-blue">OHM</span> <span class="c-amber">Desk</span>
         </h1>
         <div class="header-controls">
+            {% if user.is_authenticated and not is_google_connected %}
+                <a href="{% url 'socialaccount_connections' %}" class="button-primary button-connect-google">
+                    Connect Google
+                </a>
+            {% endif %}
             <span class="welcome-text">Welcome, {{ user.username }}</span>
             <a href="{% url 'tasks:my_tickets' %}" class="button-secondary">My Tickets</a>
             <a href="{% url 'tasks:logout' %}" class="button-secondary">Logout</a>

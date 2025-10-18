@@ -25,21 +25,16 @@ from django.urls import reverse_lazy
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
+
     #tells Django to look for any URL that isn't admin.
     path('', include('tasks.urls')), 
 
-    path(
-        'accounts/3rdparty/login/cancelled/', 
-        RedirectView.as_view(url=reverse_lazy('tasks:login')), 
-        name='socialaccount_login_cancelled_override'
-    ),
-
     #URL used for 0Auth
     path('accounts/', include('allauth.urls')),
+
 ]
 
-# Add this line at the end
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -33,7 +33,12 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 # Debug is set to True in the .env file for local development.
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
-ALLOWED_HOSTS = []
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    ALLOWED_HOSTS = ['occultware.com']
 
 
 # Application definition
@@ -46,13 +51,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+     # Add our 'tasks' app here
+    'tasks',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google', #for Google OAuth
-     # Add our 'tasks' app here
-    'tasks',
 ]
 
 
@@ -81,6 +86,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                #this checks to see if user is connected to google
+                'tasks.context_processors.google_connection_processor',
             ],
         },
     },
@@ -173,6 +181,7 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_ALLOW_REGISTRATION = False
 SOCIALACCOUNT_AUTO_SIGNUP = False
+SOCIALACCOUNT_LOGIN_ON_GET = True
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 ACCOUNT_LOGIN_METHODS={'email'}
 ACCOUNT_EMAIL_REQUIRED= ['email']

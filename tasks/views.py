@@ -275,9 +275,6 @@ def submit_ticket_view(request):
         # This handles the initial GET request
         form = UserTicketForm()
     
-    # --- THIS LINE IS THE FIX ---
-    # It must be at the base indentation level of the function
-    # so it can handle all cases that don't redirect (like GET requests).
     return render(request, 'tasks/submit_ticket.html', {'form': form})
 
 @login_required
@@ -299,3 +296,11 @@ def my_tickets_view(request):
 
 def signup_closed_view(request):
     return render(request, 'tasks/signup_closed.html')
+
+def connections_view(request):
+    '''
+    Renders custom google connect page
+    '''
+
+    return render(request, 'tasks/socialaccount/connections.html')
+    

@@ -822,3 +822,15 @@ body.dark-mode .button-google img {
     width: 20px;
     height: 20px;
 }
+
+/* connect google button */
+
+
+.button-connect-google {
+    background-color: #4285F4 !important; /* Google Blue */
+    color: white !important;
+}
+
+.button-connect-google:hover {
+    filter: brightness(0.9);
+}

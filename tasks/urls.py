@@ -38,6 +38,12 @@ urlpatterns = [
     #URL for requesters to see their tickets
     path('my-tickets/', views.my_tickets_view, name='my_tickets'),
 
+    #URL path for random people if they are trying to sign up with Google
+    path('signup-closed/', views.signup_closed_view, name='signup_closed'),
+
+    #URL that overrides allauth URL
+    path('connections/', views.connections_view, name='socialaccount_connections'),
+
 
 ]
 
