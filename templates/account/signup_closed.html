@@ -1,0 +1,21 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Sign Up Closed{% endblock %}
+
+{% block content %}
+<div class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="color-bar"></div>
+                <h1>Registration Closed</h1>
+            </div>
+            <p>We're sorry, but this service is by invitation only. New user registration is currently closed.</p>
+            <p>If you believe this is an error, please contact your administrator.</p>
+            <div class="form-actions" style="justify-content: center; margin-top: 2rem;">
+                <a href="{% url 'tasks:login' %}" class="button-primary">Return to Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

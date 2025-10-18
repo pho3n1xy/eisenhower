@@ -74,7 +74,7 @@ ROOT_URLCONF = 'eisenhower.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/ 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -177,4 +177,6 @@ EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 ACCOUNT_LOGIN_METHODS={'email'}
 ACCOUNT_EMAIL_REQUIRED= ['email']
 SOCIALACCOUNT_ADAPTER = "tasks.adapter.GoogleSocialAccountAdapter"
+ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/social/connections/'
+ACCOUNT_SIGNUP_CLOSED_REDIRECT_URL = '/signup-closed/'
 

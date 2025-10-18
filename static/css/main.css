@@ -776,3 +776,49 @@ body.dark-mode .button-google img {
     padding: 2px;          /* Add a little space around the 'G' */
     box-sizing: border-box;
 }
+
+
+/* --- Styles for Login Step 2 --- */
+
+.user-display-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+#locked-username {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--secondary-text-color);
+}
+
+.step-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+#back-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    color: var(--secondary-text-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+}
+
+#back-btn svg {
+    width: 20px;
+    height: 20px;
+}

@@ -8,53 +8,58 @@
 {% block content %}
 <div class="login-container">
     <div class="login-box">
-        <form method="POST" action="{% url 'tasks:login' %}" id="login-form">
-            {% csrf_token %}
+       <form method="POST" action="{% url 'tasks:login' %}" id="login-form">
+    {% csrf_token %}
 
-            <div id="step-username">
-                <div class="login-header">
-                    <div class="color-bar"></div>
-                    <h1>
-                        <span class="c-red">Sign</span> 
-                        <span class="c-blue">In</span> 
-                        <span class="c-amber">To</span> 
-                        <span class="c-green">Continue</span>
-                    </h1>
-                </div>
-                {% if error %}
-                    <div class="error-message">{{ error }}</div>
-                {% endif %}
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" required>
-                </div>
-                <button type="button" class="button-primary" id="next-btn">Next</button>
-                </div>
-            </div>
-
-            <div id="step-password" class="hidden">
-                <div class="login-header">
-                    <h1 id="locked-username"></h1>
-                    <div class="color-bar" style="width: 25px;"></div>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="password" id="password" required>
-                </div>
-                <button type="submit" class="button-primary">Sign In</button>
-            </div>
-            <div class="divider">or</div>
-        </form>
-
-        <div class="social-login">
-            <form action="{% provider_login_url 'google' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="button-google">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google logo">
-                    <span>Sign in with Google</span>
-                </button>
-            </form>
+    <div id="step-username">
+        <div class="login-header">
+            <div class="color-bar"></div>
+            <h1>
+                <span class="c-red">Sign</span> 
+                <span class="c-blue">In</span> 
+                <span class="c-amber">To</span> 
+                <span class="c-green">Continue</span>
+            </h1>
         </div>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+        </div>
+        <button type="button" class="button-primary" id="next-btn">Next</button>
+    </div>
+
+    <div id="step-password" class="hidden">
+        <div class="user-display-header">
+            <button type="button" id="back-btn" title="Go Back">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <span id="locked-username"></span>
+        </div>
+        <h2 class="step-title">Enter Password</h2>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <button type="submit" class="button-primary">Sign In</button>
+    </div>
+</form>
+
+<div class="divider">or</div>
+
+<div class="social-login">
+    <form action="{% provider_login_url 'google' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="button-google">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google logo">
+            <span>Sign in with Google</span>
+        </button>
+    </form>
+</div> 
     </div>
 </div>
 {% endblock %}

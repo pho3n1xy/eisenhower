@@ -296,3 +296,6 @@ def my_tickets_view(request):
         'tasks': tasks,
     }
     return render(request, 'tasks/my_tickets.html', context)
+
+def signup_closed_view(request):
+    return render(request, 'tasks/signup_closed.html')

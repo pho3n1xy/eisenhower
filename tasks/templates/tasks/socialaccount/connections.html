@@ -1,0 +1,66 @@
+{% raw %}{% extends "tasks/base.html" %}
+{% load i18n allauth socialaccount %}
+
+{% block title %}Account Connections{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="header">
+        <h1 class="header-title">
+            <span class="c-blue">OHM</span><span class="c-amber">Desk</span>
+        </h1>
+        <div class="header-controls">
+            <span class="welcome-text">Welcome, {{ user.username }}</span>
+            <a href="{% url 'tasks:matrix' %}" class="button-primary">Dashboard</a>
+            <a href="{% url 'tasks:logout' %}" class="button-primary">Logout</a>
+        </div>
+    </header>
+
+    <main class="login-page">
+        <div class="login-container">
+            <div class="login-box">
+                <h1>Account Connections</h1>
+                <p>Manage your connected third-party accounts.</p>
+                <div class="color-bar"></div>
+
+                {% if form.accounts %}
+                    <p>You can sign in to your account using any of the following third-party accounts:</p>
+                    <form method="post" action="{% url 'socialaccount_connections' %}">
+                        {% csrf_token %}
+                        <fieldset>
+                            {% for socialaccount in form.accounts %}
+                            <div class="form-group">
+                                <label for="id_account_{{ forloop.counter0 }}">
+                                    <input id="id_account_{{ forloop.counter0 }}" type="radio" name="account" value="{{ socialaccount.id }}">
+                                    {{ socialaccount.provider }} ({{ socialaccount }})
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </fieldset>
+                        <div class="form-actions">
+                             <button class="button-danger" type="submit" name="action_remove">Remove</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <p>You currently have no social accounts connected.</p>
+                {% endif %}
+
+                <div class="divider">Add a Connection</div>
+                
+                <div class="social-login">
+                    {% get_providers as socialaccount_providers %}
+                    {% for provider in socialaccount_providers %}
+                        {% if provider.id == "google" %}
+                        <a title="{{ provider.name }}" class="button-google" href="{% provider_login_url provider.id process='connect' %}">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo">
+                            <span>Connect with {{ provider.name }}</span>
+                        </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}{% endraw %}

@@ -110,3 +110,37 @@ applyTheme(savedTheme);
 themeToggleBtn.addEventListener('click', toggleTheme);
 });
 
+// --- Two-Step Login Logic ---
+const stepUsername = document.getElementById('step-username');
+const stepPassword = document.getElementById('step-password');
+const nextBtn = document.getElementById('next-btn');
+const backBtn = document.getElementById('back-btn'); // <-- Add this line
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const lockedUsernameDisplay = document.getElementById('locked-username');
+
+if (nextBtn) { // This ensures the code only runs on the login page
+    nextBtn.addEventListener('click', () => {
+        if (usernameInput.value.trim() !== '') {
+            lockedUsernameDisplay.textContent = usernameInput.value;
+            stepUsername.classList.add('hidden');
+            stepPassword.classList.remove('hidden');
+            passwordInput.focus();
+        }
+    });
+
+    // --- Add this new block for the back button ---
+    backBtn.addEventListener('click', () => {
+        stepPassword.classList.add('hidden');
+        stepUsername.classList.remove('hidden');
+        usernameInput.focus();
+    });
+    // --- End of new block ---
+
+    usernameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            nextBtn.click();
+        }
+    });
+}
